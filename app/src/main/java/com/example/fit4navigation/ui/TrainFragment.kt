@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.fit4navigation.databinding.FragmentTrainBinding
+import kotlin.properties.Delegates
 
 class TrainFragment: Fragment() {
 
     private lateinit var binding: FragmentTrainBinding
+    var counter by Delegates.notNull<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,8 +25,10 @@ class TrainFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // TODO code counter decrement
-        var counter = requireArguments().getInt("counter")
-
+        counter = requireArguments().getInt("counter")
+        if(savedInstanceState != null) {
+            counter = savedInstanceState.getInt("counter1")
+        }
         binding.counterText.text = counter.toString()
 
         binding.pushButton.setOnClickListener {
@@ -37,4 +41,8 @@ class TrainFragment: Fragment() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("counter1", counter)
+    }
 }
